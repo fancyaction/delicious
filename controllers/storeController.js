@@ -1,12 +1,11 @@
-exports.myMiddleware = (req, res, next) => {
-  req.name = 'Joy';
-  if (req.name === 'Joy') {
-    throw Error('That name is already taken.');
-  }
-  next();
+exports.homePage = (req, res) => {
+  res.render('index');
 };
 
-exports.homePage = (req, res) => {
-  console.log(req.name);
-  res.render('index');
+exports.addStore = (req, res) => {
+  res.render('editStore', { title: '🏪Add Store' });
+};
+
+exports.createStore = (req, res) => {
+  res.json(req.body);
 };
