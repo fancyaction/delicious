@@ -21,6 +21,14 @@ exports.homePage = (req, res) => {
   res.render('index');
 };
 
+exports.getStoreBySlug = async (req, res, next) => {
+  const store = await Store.findOne({ slug: req.params.slug });
+  if (!store) return next();
+  console.log(store);
+
+  res.render('store', { store });
+};
+
 exports.addStore = (req, res) => {
   res.render('editStore', { title: '🏪Add Store' });
 };
