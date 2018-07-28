@@ -38,13 +38,21 @@ const storeSchema = new mongoose.Schema({
 });
 
 // pregenerate slug name BEFORE save occurs
-storeSchema.pre('save', function(next) {
+storeSchema.pre('save', async function(next) {
   // if store name isn't modified, skip and stop function
   if (!this.isModified('name')) {
     next();
     return;
   }
   this.slug = slug(this.name);
+  // check for duplicates
+  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
+  console.log(this);
+  const storesWithSlug = await this.constructor.find({ slug: slugRegEx });
+  // if duplicates exist, add number to slug name.
+  if (storesWithSlug.length) {
+    this.slug = `${this.slug}-${storesWithSlug.length + 1}`;
+  }
   next();
 });
 
