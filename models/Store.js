@@ -56,4 +56,16 @@ storeSchema.pre('save', async function(next) {
   next();
 });
 
+storeSchema.statics.getTagsList = function() {
+  return this.aggregate([
+    // '$tags' tells mongo that tags is a field on schema model
+    // unwind makes list of new entries for each tag
+    // group by tag input from unwind array
+    // create count field in each group, adds up w/ $sum
+    { $unwind: '$tags' },
+    { $group: { _id: '$tags', count: { $sum: 1 } } },
+    { $sort: { count: -1 } }
+  ]);
+};
+
 module.exports = mongoose.model('Store', storeSchema);
