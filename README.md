@@ -1,1 +1,1 @@
-Project for Node, Express, PUG and mongoDB
+Build-to-learn project for course covering Node, Express, PUG and MongoDB.
